@@ -1,0 +1,793 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="极致CMS alipay_return_pay SQL注入漏洞漏洞描述极致CMS支付插件中存在SQL注入漏洞，通过漏洞可以获取数据库信息  漏洞影响极致CMS 网络测绘icon_hash&#x3D;”1657387632” 漏洞复现登录页面  查看一下进行过滤的函数 123456789101112131415161718192021222324252627282930313233343536373">
+<meta property="og:type" content="article">
+<meta property="og:title" content="极致CMS alipay_return_pay SQL注入漏洞">
+<meta property="og:url" content="http://example.com/2024/06/14/%E6%BC%8F%E6%B4%9E%E5%BA%93/CMS%E6%BC%8F%E6%B4%9E/%E6%9E%81%E8%87%B4CMS/%E6%9E%81%E8%87%B4CMS%20alipay_return_pay%20SQL%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:site_name" content="云浮安全实验室">
+<meta property="og:description" content="极致CMS alipay_return_pay SQL注入漏洞漏洞描述极致CMS支付插件中存在SQL注入漏洞，通过漏洞可以获取数据库信息  漏洞影响极致CMS 网络测绘icon_hash&#x3D;”1657387632” 漏洞复现登录页面  查看一下进行过滤的函数 123456789101112131415161718192021222324252627282930313233343536373">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1633500278668-c9cbbe05-5213-4454-a608-5f5cbe1c9e1b.png">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/jizhi-5.jpg">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/jizhi-6.jpg">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/image-20220313235238670.png">
+<meta property="article:published_time" content="2024-06-14T15:33:29.000Z">
+<meta property="article:modified_time" content="2024-06-14T15:33:29.443Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="极致CMS">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1633500278668-c9cbbe05-5213-4454-a608-5f5cbe1c9e1b.png">
+  
+  
+  
+  <title>极致CMS alipay_return_pay SQL注入漏洞 - 云浮安全实验室</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"j97WaZWDr63JePKi2EnNaOv2-gzGzoHsz","app_key":"rhTwo9mnTa5DN7s6Tj96dU9z","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>云浮安全实验室</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="极致CMS alipay_return_pay SQL注入漏洞"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-06-14 23:33" pubdate>
+          2024年6月14日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          998 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span>次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">极致CMS alipay_return_pay SQL注入漏洞</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="极致CMS-alipay-return-pay-SQL注入漏洞"><a href="#极致CMS-alipay-return-pay-SQL注入漏洞" class="headerlink" title="极致CMS alipay_return_pay SQL注入漏洞"></a>极致CMS alipay_return_pay SQL注入漏洞</h1><h2 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h2><p>极致CMS支付插件中存在SQL注入漏洞，通过漏洞可以获取数据库信息 </p>
+<h2 id="漏洞影响"><a href="#漏洞影响" class="headerlink" title="漏洞影响"></a>漏洞影响</h2><p>极致CMS</p>
+<h2 id="网络测绘"><a href="#网络测绘" class="headerlink" title="网络测绘"></a>网络测绘</h2><p>icon_hash&#x3D;”1657387632”</p>
+<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>登录页面</p>
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1633500278668-c9cbbe05-5213-4454-a608-5f5cbe1c9e1b.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>查看一下进行过滤的函数</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">/**</span><br><span class="hljs-comment">	参数过滤，格式化</span><br><span class="hljs-comment">**/</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">format_param</span>(<span class="hljs-params"><span class="hljs-variable">$value</span>=<span class="hljs-literal">null</span>,<span class="hljs-variable">$int</span>=<span class="hljs-number">0</span></span>)</span>&#123;<br>	<span class="hljs-keyword">if</span>(<span class="hljs-variable">$value</span>==<span class="hljs-literal">null</span>)&#123; <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>;&#125;<br>	<span class="hljs-keyword">switch</span> (<span class="hljs-variable">$int</span>)&#123;<br>		<span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:<span class="hljs-comment">//整数</span><br>			<span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>)<span class="hljs-variable">$value</span>;<br>		<span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:<span class="hljs-comment">//字符串</span><br>			<span class="hljs-variable">$value</span>=<span class="hljs-title function_ invoke__">htmlspecialchars</span>(<span class="hljs-title function_ invoke__">trim</span>(<span class="hljs-variable">$value</span>), ENT_QUOTES);<br>			<span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">version_compare</span>(PHP_VERSION,<span class="hljs-string">&#x27;7.4&#x27;</span>,<span class="hljs-string">&#x27;&gt;=&#x27;</span>))&#123;<br>				<span class="hljs-variable">$value</span> = <span class="hljs-title function_ invoke__">addslashes</span>(<span class="hljs-variable">$value</span>);<br>			&#125;<span class="hljs-keyword">else</span>&#123;<br>				<span class="hljs-keyword">if</span>(!<span class="hljs-title function_ invoke__">get_magic_quotes_gpc</span>())<span class="hljs-variable">$value</span> = <span class="hljs-title function_ invoke__">addslashes</span>(<span class="hljs-variable">$value</span>);<br>			&#125;<br>			<br>			<span class="hljs-keyword">return</span> <span class="hljs-variable">$value</span>;<br>		<span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:<span class="hljs-comment">//数组</span><br>			<span class="hljs-keyword">if</span>(<span class="hljs-variable">$value</span>==<span class="hljs-string">&#x27;&#x27;</span>)<span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>;<br>			<span class="hljs-title function_ invoke__">array_walk_recursive</span>(<span class="hljs-variable">$value</span>, <span class="hljs-string">&quot;array_format&quot;</span>);<br>			<span class="hljs-keyword">return</span> <span class="hljs-variable">$value</span>;<br>		<span class="hljs-keyword">case</span> <span class="hljs-number">3</span>:<span class="hljs-comment">//浮点</span><br>			<span class="hljs-keyword">return</span> (<span class="hljs-keyword">float</span>)<span class="hljs-variable">$value</span>;<br>		<span class="hljs-keyword">case</span> <span class="hljs-number">4</span>:<br>			<span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">version_compare</span>(PHP_VERSION,<span class="hljs-string">&#x27;7.4&#x27;</span>,<span class="hljs-string">&#x27;&gt;=&#x27;</span>))&#123;<br>				<span class="hljs-variable">$value</span> = <span class="hljs-title function_ invoke__">addslashes</span>(<span class="hljs-variable">$value</span>);<br>			&#125;<span class="hljs-keyword">else</span>&#123;<br>				<span class="hljs-keyword">if</span>(!<span class="hljs-title function_ invoke__">get_magic_quotes_gpc</span>())<span class="hljs-variable">$value</span> = <span class="hljs-title function_ invoke__">addslashes</span>(<span class="hljs-variable">$value</span>);<br>			&#125;<br>			<span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">trim</span>(<span class="hljs-variable">$value</span>);<br>	&#125;<br>&#125;<br><br><span class="hljs-comment">//过滤XSS攻击</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">SafeFilter</span>(<span class="hljs-params">&amp;<span class="hljs-variable">$arr</span></span>) </span><br><span class="hljs-function"></span>&#123;<br>   <span class="hljs-variable">$ra</span>=<span class="hljs-title function_ invoke__">Array</span>(<span class="hljs-string">&#x27;/([\x00-\x08,\x0b-\x0c,\x0e-\x19])/&#x27;</span>,<span class="hljs-string">&#x27;/script/&#x27;</span>,<span class="hljs-string">&#x27;/javascript/&#x27;</span>,<span class="hljs-string">&#x27;/vbscript/&#x27;</span>,<span class="hljs-string">&#x27;/expression/&#x27;</span>,<span class="hljs-string">&#x27;/applet/&#x27;</span><br>   ,<span class="hljs-string">&#x27;/meta/&#x27;</span>,<span class="hljs-string">&#x27;/xml/&#x27;</span>,<span class="hljs-string">&#x27;/blink/&#x27;</span>,<span class="hljs-string">&#x27;/link/&#x27;</span>,<span class="hljs-string">&#x27;/style/&#x27;</span>,<span class="hljs-string">&#x27;/embed/&#x27;</span>,<span class="hljs-string">&#x27;/object/&#x27;</span>,<span class="hljs-string">&#x27;/frame/&#x27;</span>,<span class="hljs-string">&#x27;/layer/&#x27;</span>,<span class="hljs-string">&#x27;/title/&#x27;</span>,<span class="hljs-string">&#x27;/bgsound/&#x27;</span><br>   ,<span class="hljs-string">&#x27;/base/&#x27;</span>,<span class="hljs-string">&#x27;/onload/&#x27;</span>,<span class="hljs-string">&#x27;/onunload/&#x27;</span>,<span class="hljs-string">&#x27;/onchange/&#x27;</span>,<span class="hljs-string">&#x27;/onsubmit/&#x27;</span>,<span class="hljs-string">&#x27;/onreset/&#x27;</span>,<span class="hljs-string">&#x27;/onselect/&#x27;</span>,<span class="hljs-string">&#x27;/onblur/&#x27;</span>,<span class="hljs-string">&#x27;/onfocus/&#x27;</span>,<br>   <span class="hljs-string">&#x27;/onabort/&#x27;</span>,<span class="hljs-string">&#x27;/onkeydown/&#x27;</span>,<span class="hljs-string">&#x27;/onkeypress/&#x27;</span>,<span class="hljs-string">&#x27;/onkeyup/&#x27;</span>,<span class="hljs-string">&#x27;/onclick/&#x27;</span>,<span class="hljs-string">&#x27;/ondblclick/&#x27;</span>,<span class="hljs-string">&#x27;/onmousedown/&#x27;</span>,<span class="hljs-string">&#x27;/onmousemove/&#x27;</span><br>   ,<span class="hljs-string">&#x27;/onmouseout/&#x27;</span>,<span class="hljs-string">&#x27;/onmouseover/&#x27;</span>,<span class="hljs-string">&#x27;/onmouseup/&#x27;</span>,<span class="hljs-string">&#x27;/onunload/&#x27;</span>);<br>     <br>   <span class="hljs-keyword">if</span> (<span class="hljs-title function_ invoke__">is_array</span>(<span class="hljs-variable">$arr</span>))<br>   &#123;<br>     <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$arr</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$key</span> =&gt; <span class="hljs-variable">$value</span>) <br>     &#123;<br>        <span class="hljs-keyword">if</span> (!<span class="hljs-title function_ invoke__">is_array</span>(<span class="hljs-variable">$value</span>))<br>        &#123;<br>            <span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">version_compare</span>(PHP_VERSION,<span class="hljs-string">&#x27;7.4&#x27;</span>,<span class="hljs-string">&#x27;&gt;=&#x27;</span>))&#123;<br>				<span class="hljs-variable">$value</span>  = <span class="hljs-title function_ invoke__">addslashes</span>(<span class="hljs-variable">$value</span>); <br>			&#125;<span class="hljs-keyword">else</span>&#123;<br>				<span class="hljs-keyword">if</span> (!<span class="hljs-title function_ invoke__">get_magic_quotes_gpc</span>())&#123;<br>					<span class="hljs-variable">$value</span>  = <span class="hljs-title function_ invoke__">addslashes</span>(<span class="hljs-variable">$value</span>); <br>				&#125;<br>			&#125;<br>          <span class="hljs-variable">$value</span> = <span class="hljs-title function_ invoke__">preg_replace</span>(<span class="hljs-variable">$ra</span>,<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-variable">$value</span>);     <span class="hljs-comment">//删除非打印字符，粗暴式过滤xss可疑字符串</span><br>          <span class="hljs-variable">$arr</span>[<span class="hljs-variable">$key</span>]     = <span class="hljs-title function_ invoke__">htmlentities</span>(<span class="hljs-title function_ invoke__">strip_tags</span>(<span class="hljs-variable">$value</span>)); <span class="hljs-comment">//去除 HTML 和 PHP 标记并转换为 HTML 实体</span><br>        &#125;<br>        <span class="hljs-keyword">else</span><br>        &#123;<br>          <span class="hljs-title function_ invoke__">SafeFilter</span>(<span class="hljs-variable">$arr</span>[<span class="hljs-variable">$key</span>]);<br>        &#125;<br>     &#125;<br>   &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>看一下执行的SQL语句的函数</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">// 查询一条</span><br>   <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">find</span>(<span class="hljs-params"><span class="hljs-variable">$where</span>=<span class="hljs-literal">null</span>,<span class="hljs-variable">$order</span>=<span class="hljs-literal">null</span>,<span class="hljs-variable">$fields</span>=<span class="hljs-literal">null</span>,<span class="hljs-variable">$limit</span>=<span class="hljs-number">1</span></span>)</span><br><span class="hljs-function">   </span>&#123;<br>   <span class="hljs-keyword">if</span>( <span class="hljs-variable">$record</span> = <span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-title function_ invoke__">findAll</span>(<span class="hljs-variable">$where</span>, <span class="hljs-variable">$order</span>, <span class="hljs-variable">$fields</span>, <span class="hljs-number">1</span>) )&#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">array_pop</span>(<span class="hljs-variable">$record</span>);<br>	&#125;<span class="hljs-keyword">else</span>&#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">FALSE</span>;<br>	&#125;<br>   &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>跟进 findAll 函数</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">// 查询所有</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findAll</span>(<span class="hljs-params"><span class="hljs-variable">$conditions</span>=<span class="hljs-literal">null</span>,<span class="hljs-variable">$order</span>=<span class="hljs-literal">null</span>,<span class="hljs-variable">$fields</span>=<span class="hljs-literal">null</span>,<span class="hljs-variable">$limit</span>=<span class="hljs-literal">null</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>		<span class="hljs-variable">$where</span> = <span class="hljs-string">&#x27;&#x27;</span>;<br>		<span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">is_array</span>(<span class="hljs-variable">$conditions</span>))&#123;<br>			<span class="hljs-variable">$join</span> = <span class="hljs-keyword">array</span>();<br>			<span class="hljs-keyword">foreach</span>( <span class="hljs-variable">$conditions</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$key</span> =&gt; <span class="hljs-variable">$value</span> )&#123;<br>				<span class="hljs-variable">$value</span> =  <span class="hljs-string">&#x27;\&#x27;&#x27;</span>.<span class="hljs-variable">$value</span>.<span class="hljs-string">&#x27;\&#x27;&#x27;</span>;<br>				<span class="hljs-variable">$join</span>[] = <span class="hljs-string">&quot;<span class="hljs-subst">&#123;$key&#125;</span> = <span class="hljs-subst">&#123;$value&#125;</span>&quot;</span>;<br>			&#125;<br>			<span class="hljs-variable">$where</span> = <span class="hljs-string">&quot;WHERE &quot;</span>.<span class="hljs-title function_ invoke__">join</span>(<span class="hljs-string">&quot; AND &quot;</span>,<span class="hljs-variable">$join</span>);<br>		&#125;<span class="hljs-keyword">else</span>&#123;<br>			<span class="hljs-keyword">if</span>(<span class="hljs-literal">null</span> != <span class="hljs-variable">$conditions</span>)<span class="hljs-variable">$where</span> = <span class="hljs-string">&quot;WHERE &quot;</span>.<span class="hljs-variable">$conditions</span>;<br>		&#125;<br>      <span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">is_array</span>(<span class="hljs-variable">$order</span>))&#123;<br>       		<span class="hljs-variable">$where</span> .= <span class="hljs-string">&#x27; ORDER BY &#x27;</span>;<br>            <span class="hljs-variable">$where</span> .= <span class="hljs-title function_ invoke__">implode</span>(<span class="hljs-string">&#x27;,&#x27;</span>, <span class="hljs-variable">$order</span>);<br>      &#125;<span class="hljs-keyword">else</span>&#123;<br>         <span class="hljs-keyword">if</span>(<span class="hljs-variable">$order</span>!=<span class="hljs-literal">null</span>)<span class="hljs-variable">$where</span> .= <span class="hljs-string">&quot; ORDER BY  &quot;</span>.<span class="hljs-variable">$order</span>;<br>      &#125;<br>		<br>		<span class="hljs-keyword">if</span>(!<span class="hljs-keyword">empty</span>(<span class="hljs-variable">$limit</span>))<span class="hljs-variable">$where</span> .= <span class="hljs-string">&quot; LIMIT <span class="hljs-subst">&#123;$limit&#125;</span>&quot;</span>;<br>		<span class="hljs-variable">$fields</span> = <span class="hljs-keyword">empty</span>(<span class="hljs-variable">$fields</span>) ? <span class="hljs-string">&quot;*&quot;</span> : <span class="hljs-variable">$fields</span>;<br> <br>		<span class="hljs-variable">$sql</span> = <span class="hljs-string">&quot;SELECT <span class="hljs-subst">&#123;$fields&#125;</span> FROM <span class="hljs-subst">&#123;$this-&gt;table&#125;</span> <span class="hljs-subst">&#123;$where&#125;</span>&quot;</span>;<br>		<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-title function_ invoke__">getData</span>(<span class="hljs-variable">$sql</span>);<br> <br>    &#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>在跟进一下getData函数</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">//获取数据</span><br>	<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getData</span>(<span class="hljs-params"><span class="hljs-variable">$sql</span></span>)</span><br><span class="hljs-function">	</span>&#123;<br>		<span class="hljs-keyword">if</span>(!<span class="hljs-variable">$result</span> = <span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-title function_ invoke__">query</span>(<span class="hljs-variable">$sql</span>))<span class="hljs-keyword">return</span> <span class="hljs-keyword">array</span>();<br>		<span class="hljs-keyword">if</span>(!<span class="hljs-variable language_">$this</span>-&gt;Statement-&gt;<span class="hljs-title function_ invoke__">rowCount</span>())<span class="hljs-keyword">return</span> <span class="hljs-keyword">array</span>();<br>		<span class="hljs-variable">$rows</span> = <span class="hljs-keyword">array</span>();<br>		<span class="hljs-keyword">while</span>(<span class="hljs-variable">$rows</span>[] = <span class="hljs-variable language_">$this</span>-&gt;Statement-&gt;<span class="hljs-title function_ invoke__">fetch</span>(PDO::<span class="hljs-variable constant_">FETCH_ASSOC</span>))&#123;&#125;<br>		<span class="hljs-variable language_">$this</span>-&gt;Statement=<span class="hljs-literal">null</span>;<br>		<span class="hljs-title function_ invoke__">array_pop</span>(<span class="hljs-variable">$rows</span>);<br>		<span class="hljs-keyword">return</span> <span class="hljs-variable">$rows</span>;<br>	&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>跟进query执行函数</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">//执行SQL语句并检查是否错误</span><br>	<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">query</span>(<span class="hljs-params"><span class="hljs-variable">$sql</span></span>)</span>&#123;<br>		<span class="hljs-variable language_">$this</span>-&gt;filter[] = <span class="hljs-variable">$sql</span>;<br>        <span class="hljs-variable language_">$this</span>-&gt;Statement = <span class="hljs-variable language_">$this</span>-&gt;pdo-&gt;<span class="hljs-title function_ invoke__">query</span>(<span class="hljs-variable">$sql</span>);<br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">$this</span>-&gt;Statement) &#123;<br>			<span class="hljs-keyword">return</span> <span class="hljs-variable language_">$this</span>;<br>        &#125;<span class="hljs-keyword">else</span>&#123;<br>			<span class="hljs-variable">$msg</span> = <span class="hljs-variable language_">$this</span>-&gt;pdo-&gt;<span class="hljs-title function_ invoke__">errorInfo</span>();<br>			<span class="hljs-keyword">if</span>(<span class="hljs-variable">$msg</span>[<span class="hljs-number">2</span>]) <span class="hljs-keyword">exit</span>(<span class="hljs-string">&#x27;数据库错误：&#x27;</span> . <span class="hljs-variable">$msg</span>[<span class="hljs-number">2</span>] . <span class="hljs-title function_ invoke__">end</span>(<span class="hljs-variable">$this</span>-&gt;filter));<br>		&#125;<br>	&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>✅看到<code>$msg = $this-&gt;pdo-&gt;errorInfo();</code>语句，也就是说会把数据库报错信息打印在页面上并显示出来并退出</li>
+<li>✅一套分析下来没有发现对sql语句的过滤，如果得到的数据没有经过<code>format_param</code>过滤，会产生注入</li>
+</ul>
+<p>例如:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">exploit</span>(<span class="hljs-params"></span>)</span>&#123;<br>    <span class="hljs-title function_ invoke__">M</span>(<span class="hljs-string">&#x27;member&#x27;</span>)-&gt;<span class="hljs-title function_ invoke__">find</span>([<span class="hljs-string">&#x27;username&#x27;</span>=&gt;<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;name&#x27;</span>]]);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>如果直接这样GET POST REQUEST 带入数据库 会产生报错注入</p>
+<p>例如  .&#x2F;exploit&#x2F;name&#x3D;123’  (加一个引号会报错，如果引号没过滤)</p>
+<p>现在只需要寻找类型是这样没过滤直接带入数据库的语句就行了</p>
+<p>简单寻找下其实这样的地方挺多的，拿一个位置举例子</p>
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/jizhi-5.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>这里是一个支付插件的位置，蓝色方块1增加代码模拟开通支付宝功能通过验证</p>
+<p>可以看到这个函数只使用[htmlspecialchars]来过滤了xss，sql语句没有过滤，用刚刚的方法来注入</p>
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/jizhi-6.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>可以看到的确出现了sql语句和数据库错误,直接报错注入获取敏感信息</p>
+<p><code>mypay/alipay_return_pay?out_trade_no=1%27 and updatexml(1,concat(0x7e,(select version()),0x7e),1)--+&quot;</code></p>
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/image-20220313235238670.png" srcset="/img/loading.gif" lazyload alt="image-20220313235238670"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/CMS%E6%BC%8F%E6%B4%9E/" class="category-chain-item">CMS漏洞</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9E%81%E8%87%B4CMS/" class="print-no-link">#极致CMS</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>极致CMS alipay_return_pay SQL注入漏洞</div>
+      <div>http://example.com/2024/06/14/漏洞库/CMS漏洞/极致CMS/极致CMS alipay_return_pay SQL注入漏洞/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年6月14日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/06/14/%E6%BC%8F%E6%B4%9E%E5%BA%93/CMS%E6%BC%8F%E6%B4%9E/emlog/emlog%E5%90%8E%E5%8F%B0%E6%8F%92%E4%BB%B6%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0(CVE-2024-33752)/" title="emlog后台插件任意文件上传(CVE-2024-33752)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">emlog后台插件任意文件上传(CVE-2024-33752)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/06/14/%E6%BC%8F%E6%B4%9E%E5%BA%93/CMS%E6%BC%8F%E6%B4%9E/%E6%9E%81%E8%87%B4CMS/%E6%9E%81%E8%87%B4CMS%20%E5%90%8E%E5%8F%B0%E6%96%87%E4%BB%B6%E7%BC%96%E8%BE%91%E6%8F%92%E4%BB%B6%20%E5%90%8E%E5%8F%B0%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5%E6%BC%8F%E6%B4%9E/" title="极致CMS 后台文件编辑插件 后台任意文件写入漏洞">
+                        <span class="hidden-mobile">极致CMS 后台文件编辑插件 后台任意文件写入漏洞</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"j97WaZWDr63JePKi2EnNaOv2-gzGzoHsz","appKey":"rhTwo9mnTa5DN7s6Tj96dU9z","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

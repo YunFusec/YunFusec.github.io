@@ -1,0 +1,799 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="WSO2 proxy SSRF漏洞 WSO2-2019-0598漏洞描述滥用 shindig Web 应用程序的 UI 小工具加载功能可以利用此漏洞。攻击者可以更改请求中的特定 URL，从而导致服务器向更改后的 URL 发起 GET 请求。通过利用此漏洞，攻击者可以使用服务器执行任意外部服务交互。这可以特别用于与内部网络的节点进行交互，否则这些节点会被网络规则隐藏在外部。攻击者可以利用它来追踪和侦">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WSO2 proxy SSRF漏洞 WSO2-2019-0598">
+<meta property="og:url" content="http://example.com/2024/06/14/%E6%BC%8F%E6%B4%9E%E5%BA%93/web%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E/WSO2/WSO2%20proxy%20SSRF%E6%BC%8F%E6%B4%9E%20WSO2-2019-0598/index.html">
+<meta property="og:site_name" content="云浮安全实验室">
+<meta property="og:description" content="WSO2 proxy SSRF漏洞 WSO2-2019-0598漏洞描述滥用 shindig Web 应用程序的 UI 小工具加载功能可以利用此漏洞。攻击者可以更改请求中的特定 URL，从而导致服务器向更改后的 URL 发起 GET 请求。通过利用此漏洞，攻击者可以使用服务器执行任意外部服务交互。这可以特别用于与内部网络的节点进行交互，否则这些节点会被网络规则隐藏在外部。攻击者可以利用它来追踪和侦">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650949168107-52c50aa8-724d-44fe-b6b7-88c5ee421b1a.png">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650949296183-8fcf7648-396c-4cf0-97e6-2d8bd7703549.png">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650949352127-e4a58aa5-02ab-47b6-a39f-4c4674078557.png">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650949484773-86c19b18-058f-4b04-b3af-f2c770e042fe.png">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650949747820-46ca8de3-5455-4814-9d7d-1f43470e9842.png">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650949997574-c1633833-c71b-4d0d-b6f7-b2408c614032.png">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650952090941-f1e39caa-c6ee-4ad2-9ee9-51f1d52f88f0.png">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650952325298-e424a1e2-e3e0-4a14-8424-10cfb0d63365.png">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650952414457-a9d6704f-ac22-48fb-ba74-d1c96e2c18b0.png">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650952488384-050175c2-7724-4dc3-a07d-ab5b893a2867.png">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650952714596-71a7d9a1-931d-4592-a594-a0a113410d1c.png">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650956411691-435ce4a4-0fd4-4c36-ae68-f225e5eefb31.png">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650957359634-2d8e534a-14d0-409c-8b7d-61fdbdc5695b.png">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650956748587-08627c03-ca22-489e-b174-eb1c476f9072.png">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650956819778-3300aef4-dc84-425e-bcdf-6f5dd04bfa3e.png">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650957201523-47aa0d2c-7cc7-4c10-b14c-fd48049681d3.png">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650957230578-815a5156-d3b5-419b-a2e7-c2ac97a2c562.png">
+<meta property="article:published_time" content="2024-06-14T15:33:29.000Z">
+<meta property="article:modified_time" content="2024-06-14T15:33:29.780Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="WSO2">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650949168107-52c50aa8-724d-44fe-b6b7-88c5ee421b1a.png">
+  
+  
+  
+  <title>WSO2 proxy SSRF漏洞 WSO2-2019-0598 - 云浮安全实验室</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"j97WaZWDr63JePKi2EnNaOv2-gzGzoHsz","app_key":"rhTwo9mnTa5DN7s6Tj96dU9z","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>云浮安全实验室</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="WSO2 proxy SSRF漏洞 WSO2-2019-0598"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-06-14 23:33" pubdate>
+          2024年6月14日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          982 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span>次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">WSO2 proxy SSRF漏洞 WSO2-2019-0598</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="WSO2-proxy-SSRF漏洞-WSO2-2019-0598"><a href="#WSO2-proxy-SSRF漏洞-WSO2-2019-0598" class="headerlink" title="WSO2 proxy SSRF漏洞 WSO2-2019-0598"></a>WSO2 proxy SSRF漏洞 WSO2-2019-0598</h1><h2 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h2><p>滥用 shindig Web 应用程序的 UI 小工具加载功能可以利用此漏洞。攻击者可以更改请求中的特定 URL，从而导致服务器向更改后的 URL 发起 GET 请求。通过利用此漏洞，攻击者可以使用服务器执行任意外部服务交互。这可以特别用于与内部网络的节点进行交互，否则这些节点会被网络规则隐藏在外部。攻击者可以利用它来追踪和侦察网络，除此之外，如果有内部端点对 GET 请求进行状态更改操作，那么就有可能很好地破坏它们的完整性。根据端点实施的保护级别，此漏洞的影响可能会有所不同。</p>
+<h2 id="漏洞影响"><a href="#漏洞影响" class="headerlink" title="漏洞影响"></a>漏洞影响</h2><p>WSO2 Identity Server  5.2.0 , 5.3.0 , 5.4.0 , 5.4.1 , 5.5.0 , 5.6.0 , 5.7.0</p>
+<p>WSO2 IS as Key Manager  5.3.0 , 5.5.0 , 5.6.0 , 5.7.0</p>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p><a target="_blank" rel="noopener" href="https://github.com/wso2/product-is/releases/download/v5.6.0-rc3/wso2is-5.6.0-rc3.zip">https://github.com/wso2/product-is/releases/download/v5.6.0-rc3/wso2is-5.6.0-rc3.zip</a></p>
+<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>根据官方描述，漏洞造成的原因主要是  shindig Web 应用程序的 UI 小工具的加载功能, <a target="_blank" rel="noopener" href="https://docs.wso2.com/display/Security/Security+Advisory+WSO2-2019-0598">WSO2-2019-0598</a></p>
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650949168107-52c50aa8-724d-44fe-b6b7-88c5ee421b1a.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>下载源码启动环境，在IDEA中调试,</p>
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650949296183-8fcf7648-396c-4cf0-97e6-2d8bd7703549.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650949352127-e4a58aa5-02ab-47b6-a39f-4c4674078557.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>根据官方描述，在全局搜索 shindig 相关代码</p>
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650949484773-86c19b18-058f-4b04-b3af-f2c770e042fe.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>打下断点，看一下访问 <code>/shindig/gadgets/js</code> 路径时代码的调用流程</p>
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650949747820-46ca8de3-5455-4814-9d7d-1f43470e9842.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>可以看到当访问此路径时，调用了对应的 Servlet 下的 doGet方法 来处理<code>(org.apache.shindig.gadgets.servlet.JsServlet.doGet(JsServlet.java:86)</code></p>
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650949997574-c1633833-c71b-4d0d-b6f7-b2408c614032.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>我们可以在文件 <code>conf/shindig/web.xml 找到对应的调用方法</code><br><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650952090941-f1e39caa-c6ee-4ad2-9ee9-51f1d52f88f0.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>看到这我们注意到 <code>org.apache.shindig.gadgets.servlet.MakeRequestServlet</code> 似乎与  Jira未授权SSRF漏洞(CVE-2019-8451) 中存在的漏洞点十分的相似</p>
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650952325298-e424a1e2-e3e0-4a14-8424-10cfb0d63365.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>但断点调试过程中，却发现这个点是利用失败的</p>
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650952414457-a9d6704f-ac22-48fb-ba74-d1c96e2c18b0.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650952488384-050175c2-7724-4dc3-a07d-ab5b893a2867.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>只好去看一下其他的Servele , 最后我们注意到 ProxyServlet</p>
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650952714596-71a7d9a1-931d-4592-a594-a0a113410d1c.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>发送请求包，打断点看一下处理流程</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java">GET /shindig/gadgets/proxy?container=<span class="hljs-keyword">default</span>&amp;url=https:<span class="hljs-comment">//www.baidu.com HTTP/1.1</span><br>Host: localhost:<span class="hljs-number">9443</span><br>Accept: text/html,application/xhtml+xml,application/xml;q=<span class="hljs-number">0.9</span>,image/avif,image/webp,image/apng,*<span class="hljs-comment">/*;q=0.8,application/signed-exchange;v=b3;q=0.9</span><br><span class="hljs-comment">Accept-Encoding: gzip, deflate, br</span><br><span class="hljs-comment">Accept-Language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7,zh-TW;q=0.6</span><br><span class="hljs-comment">Content-Length: 0</span><br><span class="hljs-comment">Sec-Ch-Ua: &quot; Not A;Brand&quot;;v=&quot;99&quot;, &quot;Chromium&quot;;v=&quot;100&quot;, &quot;Google Chrome&quot;;v=&quot;100&quot;</span><br><span class="hljs-comment">Sec-Ch-Ua-Mobile: ?0</span><br><span class="hljs-comment">Sec-Ch-Ua-Platform: &quot;macOS&quot;</span><br><span class="hljs-comment">Sec-Fetch-Dest: document</span><br><span class="hljs-comment">Sec-Fetch-Mode: navigate</span><br><span class="hljs-comment">Sec-Fetch-Site: cross-site</span><br><span class="hljs-comment">Upgrade-Insecure-Requests: 1</span><br><span class="hljs-comment">User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36</span><br></code></pre></td></tr></table></figure>
+
+<p>通过 <code>org.apache.shindig.gadgets.servlet.ProxyServlet</code> 下的 doGet方法接收参数， 传入 <code>processRequest</code></p>
+<p>中 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">processRequest</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse servletResponse)</span> <span class="hljs-keyword">throws</span> IOException &#123;<br>        <span class="hljs-keyword">if</span> (request.getHeader(<span class="hljs-string">&quot;If-Modified-Since&quot;</span>) != <span class="hljs-literal">null</span>) &#123;<br>            servletResponse.setStatus(<span class="hljs-number">304</span>);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-type">Uri</span> <span class="hljs-variable">reqUri</span> <span class="hljs-operator">=</span> (<span class="hljs-keyword">new</span> <span class="hljs-title class_">UriBuilder</span>(request)).toUri();<br><br>            HttpResponse response;<br>            <span class="hljs-keyword">try</span> &#123;<br>                <span class="hljs-type">ProxyUri</span> <span class="hljs-variable">proxyUri</span> <span class="hljs-operator">=</span> <span class="hljs-built_in">this</span>.proxyUriManager.process(reqUri);<br>                <span class="hljs-type">SecurityToken</span> <span class="hljs-variable">st</span> <span class="hljs-operator">=</span> AuthInfoUtil.getSecurityTokenFromRequest(request);<br>                proxyUri.setSecurityToken(st);<br>                proxyUri.setUserAgent(request.getHeader(<span class="hljs-string">&quot;User-Agent&quot;</span>));<br>                <span class="hljs-keyword">if</span> (proxyUri.getGadget() == <span class="hljs-literal">null</span> &amp;&amp; st != <span class="hljs-literal">null</span> &amp;&amp; !st.isAnonymous()) &#123;<br>                    proxyUri.setGadget(st.getAppUrl());<br>                &#125;<br><br>                <span class="hljs-type">AuthType</span> <span class="hljs-variable">authType</span> <span class="hljs-operator">=</span> proxyUri.getAuthType();<br>                <span class="hljs-keyword">if</span> (AuthType.OAUTH.equals(authType)) &#123;<br>                    proxyUri.setOAuthArguments(<span class="hljs-keyword">new</span> <span class="hljs-title class_">OAuthArguments</span>(AuthType.OAUTH, request));<br>                &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (AuthType.OAUTH2.equals(authType)) &#123;<br>                    proxyUri.setOAuth2Arguments(<span class="hljs-keyword">new</span> <span class="hljs-title class_">OAuth2Arguments</span>(request));<br>                &#125;<br><br>                <span class="hljs-type">String</span> <span class="hljs-variable">host</span> <span class="hljs-operator">=</span> request.getHeader(<span class="hljs-string">&quot;Host&quot;</span>);<br>                <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">this</span>.lockedDomainService.isSafeForOpenProxy(host)) &#123;<br>                    <span class="hljs-type">Uri</span> <span class="hljs-variable">resourceUri</span> <span class="hljs-operator">=</span> proxyUri.getResource();<br>                    <span class="hljs-type">String</span> <span class="hljs-variable">msg</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;Embed request for url &quot;</span> + (resourceUri != <span class="hljs-literal">null</span> ? resourceUri.toString() : <span class="hljs-string">&quot;n/a&quot;</span>) + <span class="hljs-string">&quot; made to wrong domain &quot;</span> + host;<br>                    <span class="hljs-keyword">if</span> (LOG.isLoggable(Level.INFO)) &#123;<br>                        LOG.logp(Level.INFO, classname, <span class="hljs-string">&quot;processRequest&quot;</span>, <span class="hljs-string">&quot;embededImgWrongDomain&quot;</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>[]&#123;resourceUri != <span class="hljs-literal">null</span> ? resourceUri.toString() : <span class="hljs-string">&quot;n/a&quot;</span>, host&#125;);<br>                    &#125;<br><br>                    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">GadgetException</span>(Code.INVALID_PARAMETER, msg, <span class="hljs-number">400</span>);<br>                &#125;<br><br>                <span class="hljs-keyword">if</span> (<span class="hljs-string">&quot;POST&quot;</span>.equalsIgnoreCase(request.getMethod())) &#123;<br>                    <span class="hljs-type">StringBuffer</span> <span class="hljs-variable">buffer</span> <span class="hljs-operator">=</span> <span class="hljs-built_in">this</span>.getPOSTContent(request);<br>                    response = <span class="hljs-built_in">this</span>.proxyHandler.fetch(proxyUri, buffer.toString());<br>                &#125; <span class="hljs-keyword">else</span> &#123;<br>                    response = <span class="hljs-built_in">this</span>.proxyHandler.fetch(proxyUri);<br>                &#125;<br>            &#125; <span class="hljs-keyword">catch</span> (GadgetException var11) &#123;<br>                response = ServletUtil.errorResponse(<span class="hljs-keyword">new</span> <span class="hljs-title class_">GadgetException</span>(var11.getCode(), var11.getMessage(), <span class="hljs-number">400</span>));<br>            &#125;<br><br>            ServletUtil.copyToServletResponseAndOverrideCacheHeaders(response, servletResponse);<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>向下跟进到<code>org.apache.shindig.gadgets.servlet.ProxyHandler</code></p>
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650956411691-435ce4a4-0fd4-4c36-ae68-f225e5eefb31.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><code>org.apache.shindig.gadgets.servlet.ProxyHandler.fatch</code></p>
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650957359634-2d8e534a-14d0-409c-8b7d-61fdbdc5695b.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>接着向下看到 org.apache.shindig.gadgets.servlet.ProxyHandler 下的 <code>buildHttpRequest</code> 方法创建Http请求， 而目标就是我们刚刚传入的Url参数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> HttpRequest <span class="hljs-title function_">buildHttpRequest</span><span class="hljs-params">(ProxyUri uriCtx, Uri tgt, <span class="hljs-meta">@Nullable</span> String postBody)</span> <span class="hljs-keyword">throws</span> GadgetException, IOException &#123;<br>       ServletUtil.validateUrl(tgt);<br>       <span class="hljs-type">HttpRequest</span> <span class="hljs-variable">req</span> <span class="hljs-operator">=</span> uriCtx.makeHttpRequest(tgt);<br>       req.setRewriteMimeType(uriCtx.getRewriteMimeType());<br>       <span class="hljs-keyword">if</span> (postBody != <span class="hljs-literal">null</span>) &#123;<br>           req.setMethod(<span class="hljs-string">&quot;POST&quot;</span>);<br>           req.setPostBody(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ByteArrayInputStream</span>(postBody.getBytes()));<br>       &#125;<br><br>       <span class="hljs-keyword">if</span> (req.getHeader(<span class="hljs-string">&quot;User-Agent&quot;</span>) == <span class="hljs-literal">null</span>) &#123;<br>           <span class="hljs-type">String</span> <span class="hljs-variable">userAgent</span> <span class="hljs-operator">=</span> uriCtx.getUserAgent();<br>           <span class="hljs-keyword">if</span> (userAgent != <span class="hljs-literal">null</span>) &#123;<br>               req.setHeader(<span class="hljs-string">&quot;User-Agent&quot;</span>, userAgent);<br>           &#125;<br>       &#125;<br><br>       <span class="hljs-keyword">return</span> req;<br>   &#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650956748587-08627c03-ca22-489e-b174-eb1c476f9072.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650956819778-3300aef4-dc84-425e-bcdf-6f5dd04bfa3e.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>最后回显至页面中, 造成存在回显的SSRF</p>
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650957201523-47aa0d2c-7cc7-4c10-b14c-fd48049681d3.png" srcset="/img/loading.gif" lazyload alt="img"><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1650957230578-815a5156-d3b5-419b-a2e7-c2ac97a2c562.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/web%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E/" class="category-chain-item">web应用漏洞</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/WSO2/" class="print-no-link">#WSO2</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>WSO2 proxy SSRF漏洞 WSO2-2019-0598</div>
+      <div>http://example.com/2024/06/14/漏洞库/web应用漏洞/WSO2/WSO2 proxy SSRF漏洞 WSO2-2019-0598/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年6月14日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/06/14/%E6%BC%8F%E6%B4%9E%E5%BA%93/web%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E/WSO2/WSO2%20fileupload%20%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%20CVE-2022-29464/" title="WSO2 fileupload 任意文件上传漏洞 CVE-2022-29464">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">WSO2 fileupload 任意文件上传漏洞 CVE-2022-29464</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/06/14/%E6%BC%8F%E6%B4%9E%E5%BA%93/web%E5%BA%94%E7%94%A8%E6%BC%8F%E6%B4%9E/Webgrind/Webgrind%20fileviewer.phtml%20%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E%20CVE-2018-12909/" title="Webgrind fileviewer.phtml 任意文件读取漏洞 CVE-2018-12909">
+                        <span class="hidden-mobile">Webgrind fileviewer.phtml 任意文件读取漏洞 CVE-2018-12909</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"j97WaZWDr63JePKi2EnNaOv2-gzGzoHsz","appKey":"rhTwo9mnTa5DN7s6Tj96dU9z","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

