@@ -1,0 +1,472 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="项目地址: https:&#x2F;&#x2F;github.com&#x2F;HackAllSec&#x2F;hfinger [简介]hfinger 是一个高性能、准确的命令行指纹识别工具，用于红队打点时快速准确识别指定目标的 Web 框架和 CMS 等信息。由于EHole很久没更新了，且存在一些缺点（误报、漏报、匹配不太灵活等），此工具根据 finger.json 文件中定义的指纹进行匹配，优化原有文件结构，增加匹配逻辑，增加错误页">
+<meta property="og:type" content="website">
+<meta property="og:title" content="page.title">
+<meta property="og:url" content="http://example.com/1.html">
+<meta property="og:site_name" content="云浮安全实验室">
+<meta property="og:description" content="项目地址: https:&#x2F;&#x2F;github.com&#x2F;HackAllSec&#x2F;hfinger [简介]hfinger 是一个高性能、准确的命令行指纹识别工具，用于红队打点时快速准确识别指定目标的 Web 框架和 CMS 等信息。由于EHole很久没更新了，且存在一些缺点（误报、漏报、匹配不太灵活等），此工具根据 finger.json 文件中定义的指纹进行匹配，优化原有文件结构，增加匹配逻辑，增加错误页">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-08-17T03:43:21.243Z">
+<meta property="article:modified_time" content="2024-08-17T03:43:21.243Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>page.title - 云浮安全实验室</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"j97WaZWDr63JePKi2EnNaOv2-gzGzoHsz","app_key":"rhTwo9mnTa5DN7s6Tj96dU9z","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+    <!-- Google tag (gtag.js) -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', '');
+        });
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>云浮安全实验室</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://xiaoqian8.oss-cn-shanghai.aliyuncs.com/images/wallhaven-d6x77m.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="page.title"></span>
+          
+        </div>
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<article class="page-content">
+  <p>项目地址: <code>https://github.com/HackAllSec/hfinger</code></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="[简介]"></a><strong>[<strong><strong>简介</strong></strong>]</strong></h2><p><strong>hfinger</strong> 是一个<strong>高性能</strong>、<strong>准确</strong>的命令行指纹识别工具，用于红队打点时快速准确识别指定目标的 Web 框架和 CMS 等信息。由于<strong>EHole</strong>很久没更新了，且存在一些缺点（误报、漏报、匹配不太灵活等），此工具根据 <code>finger.json</code> 文件中定义的指纹进行匹配，优化原有文件结构，增加匹配逻辑，增加错误页识别和被动识别模式。</p>
+<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ul>
+<li>高性能、精准的识别目标</li>
+<li>支持同一目标匹配多个框架指纹识别</li>
+<li>支持<strong>主动模式</strong>和<strong>被动模式</strong></li>
+<li>支持根据错误页识别</li>
+<li>根据响应 <code>Header</code>、<code>body</code> 和 <code>title</code> 与 <code>finger.json</code> 中定义的指纹进行匹配</li>
+<li><code>finger.json</code>支持自定义匹配逻辑</li>
+<li>支持随机UA头</li>
+<li>支持多线程，线程数可通过 <code>-t</code> 参数调整</li>
+<li>支持代理，通过 <code>-p</code> 参数指定代理</li>
+<li>实时输出匹配结果，匹配到则使用绿色输出，未匹配到则使用白色输出</li>
+<li>支持 JSON、XML 和 XLSX 格式的输出</li>
+</ul>
+<h3 id="指纹库"><a href="#指纹库" class="headerlink" title="指纹库"></a>指纹库</h3><ul>
+<li>收录的产品、Web框架和CMS总数（根据不同cms的值统计，名称相同的指纹只记1次）：<strong>1177</strong></li>
+<li>指纹总数量（数量小的原因是已将指纹进行优化和合并，对同一资产的指纹进行合并）：<strong>1412</strong></li>
+</ul>
+<p>兵在精而不在多，指纹数量也一样，看数量意义不大，关键看可以识别的产品、Web框架和CMS数量。</p>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="[使用方法]"></a><strong>[<strong><strong>使用方法</strong></strong>]</strong></h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><ol>
+<li>直接访问<code>https://github.com/HackAllSec/hfinger/releases</code>，选择并下载适合自己电脑的最新Releases版本解压即可</li>
+<li>确保你已经安装了 Go 语言环境，然后克隆本仓库并编译：</li>
+<li><pre><code class="hljs">git clone https://github.com/HackAllSec/hfinger.git
+cd hfinger
+go build
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs clean"><br><span class="hljs-number">4.</span> Windows下可直接运行`build_windows.bat`编译。<br><br>### 命令行参数<br><br></code></pre></td></tr></table></figure>
+ █████         ██████   ███
+▒▒███         ███▒▒███ ▒▒▒
+ ▒███████    ▒███ ▒▒▒  ████  ████████    ███████  ██████  ████████
+ ▒███▒▒███  ███████   ▒▒███ ▒▒███▒▒███  ███▒▒███ ███▒▒███▒▒███▒▒███
+ ▒███ ▒███ ▒▒▒███▒     ▒███  ▒███ ▒███ ▒███ ▒███▒███████  ▒███ ▒▒▒
+ ▒███ ▒███   ▒███      ▒███  ▒███ ▒███ ▒███ ▒███▒███▒▒▒   ▒███
+ ████ █████  █████     █████ ████ █████▒▒███████▒▒██████  █████
+▒▒▒▒ ▒▒▒▒▒  ▒▒▒▒▒     ▒▒▒▒▒ ▒▒▒▒ ▒▒▒▒▒  ▒▒▒▒▒███ ▒▒▒▒▒▒  ▒▒▒▒▒
+                                     ███ ▒███
+                                    ▒▒██████
+                                     ▒▒▒▒▒▒                     By:Hack All Sec
+</code></pre>
+</li>
+</ol>
+<p>A high-performance command-line tool for web framework and CMS fingerprinting</p>
+<p>Usage:<br>  hfinger [flags]</p>
+<p>Flags:<br>  -f, –file string          Read assets from local files for fingerprint recognition, with one target per line<br>  -h, –help                 help for hfinger<br>  -l, –listen string        Using a proxy resource collector to retrieve targets, example: 127.0.0.1:6789<br>  -j, –output-json string   Output all results to a JSON file<br>  -s, –output-xlsx string   Output all results to a Excel file<br>  -x, –output-xml string    Output all results to a XML file<br>  -p, –proxy string         Specify the proxy for accessing the target, supporting HTTP and SOCKS, example: <a target="_blank" rel="noopener" href="http://127.0.0.1:8080/">http://127.0.0.1:8080</a><br>  -t, –thread int           Number of fingerprint recognition threads (default 100)<br>      –update               Update fingerprint database<br>      –upgrade              Upgrade to the latest version<br>  -u, –url string           Specify the recognized target,example: <a target="_blank" rel="noopener" href="https://www.example.com/">https://www.example.com</a><br>  -v, –version              Display the current version of the tool</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs clean"><br>### 使用示例<br><br>#### 主动模式<br><br>单个 URL 识别:<br><br></code></pre></td></tr></table></figure>
+<p>hfinger -u <a target="_blank" rel="noopener" href="https://www.hackall.cn/">https://www.hackall.cn</a></p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><br><span class="hljs-section">从文件中读取目标并识别:</span><br><br></code></pre></td></tr></table></figure>
+<p>hfinger -f targets.txt</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><br><span class="hljs-section">指定代理:</span><br><br></code></pre></td></tr></table></figure>
+<p>hfinger -u <a target="_blank" rel="noopener" href="https://www.hackall.cn/">https://www.hackall.cn</a> -p <a target="_blank" rel="noopener" href="http://127.0.0.1:8080/">http://127.0.0.1:8080</a></p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs coffeescript"><br>输出 <span class="hljs-built_in">JSON</span> 格式识别结果到文件:<br><br></code></pre></td></tr></table></figure>
+<p>hfinger -u <a target="_blank" rel="noopener" href="https://www.hackall.cn/">https://www.hackall.cn</a> -j output.json</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs crmsh"><br>输出 <span class="hljs-keyword">XML</span> <span class="hljs-title">格式识别结果到文件:</span><br><span class="hljs-title"></span><br></code></pre></td></tr></table></figure>
+<p>hfinger -u <a target="_blank" rel="noopener" href="https://www.hackall.cn/">https://www.hackall.cn</a> -x output.xml</p>
+<figure class="highlight nestedtext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs nestedtext"><br><span class="hljs-attribute">输出 XLSX 格式识别结果到文件</span><span class="hljs-punctuation">:</span><br><span class="hljs-punctuation"></span><br></code></pre></td></tr></table></figure>
+<p>hfinger -u <a target="_blank" rel="noopener" href="https://www.hackall.cn/">https://www.hackall.cn</a> -s output.xlsx</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs clean"><br>#### 被动模式<br><br>用法和`Xray`类似，包括启动监听、添加上游代理，工具联动等等。被动模式可以识别主动模式无法识别的指纹，且比主动扫描更加全面。<br><br>启动监听即可：<br><br></code></pre></td></tr></table></figure>
+<p>hfinger -l 127.0.0.1:8888 -s res.xlsx</p>
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><br>要支持HTTPS网站需要将`certs`目录下的证书导入浏览器。<br><br>**联动其它工具**<br><br>联动`Xray`或其它工具有两种方式：<br><br><span class="hljs-title">方式一:</span> `Target -&gt; Xray/Burp -&gt; hfinger`<br><br>在上边的基础上浏览器设置代理经过`Xray`或`Burp`，然后在`Xray`或`Burp`配置上游代理为`hfinger`的监听地址即可。<br><br><span class="hljs-title">方式二:</span> `Target -&gt; hfinger -&gt; Xray`<br><br>启动`hfinger`被动模式，使用`-p`参数设置上游代理，浏览器设置代理为`hfinger`的监听地址即可。<br><br></code></pre></td></tr></table></figure>
+<p>hfinger -l 127.0.0.1:8888 -p <a target="_blank" rel="noopener" href="http://127.0.0.1:7777/">http://127.0.0.1:7777</a> -s res.xlsx</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><br>![图片]<span class="hljs-params">(https://mmbiz.qpic.cn/sz_mmbiz_jpg/s7bObPUU0RT11bAwHBGU4qxiayh7tskusxc14f1BfTNKIqHSoKKbibeAGgFCib8icPIcFjSiaBSCMJScmBm09CgEsaw/640?<span class="hljs-attr">wx_fmt</span>=jpeg&amp;<span class="hljs-attr">from</span>=appmsg&amp;<span class="hljs-attr">tp</span>=webp&amp;<span class="hljs-attr">wxfrom</span>=5&amp;<span class="hljs-attr">wx_lazy</span>=1&amp;<span class="hljs-attr">wx_co</span>=1)</span><br><br><span class="hljs-comment">### 输出示例</span><br><br>1. 实时输出到终端<br><br>2. JSON 输出格式:<br><br></code></pre></td></tr></table></figure>
+<p>   [<br>     {<br>    “url”: “<a href="https://example.com/">https://example.com</a>“,<br>    “cms”: “若依”,<br>    “server”: “cloudflare”,<br>    “statuscode”: 200,<br>    “title”: “登录”<br>     },<br>     {<br>    “url”: “<a href="https://example.com/">https://example.com</a>“,<br>    “cms”: “Shiro”,<br>    “server”: “cloudflare”,<br>    “statuscode”: 200,<br>    “title”: “登录”<br>     }<br>   ]<br>   <figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs crmsh"><br><span class="hljs-number">3</span>. <span class="hljs-keyword">XML</span> <span class="hljs-title">输出格式:</span><br><span class="hljs-title"></span><br></code></pre></td></tr></table></figure><br>   <results><br>     <result><br>    <URL><a target="_blank" rel="noopener" href="https://blog.hackall.cn/">https://blog.hackall.cn</a></URL><br>    <CMS>Typecho</CMS><br>    <Server>cloudflare</Server><br>    <StatusCode>404</StatusCode><br>    <Title>Hack All Sec的博客 - Hack All Sec&#39;s Blog</Title><br>     </result><br>   </results></p>
+<pre><code class="hljs">
+4. XLSX输出格式：
+
+| URL                     | CMS     | Server     | StatusCode | Title                                    |
+| ----------------------- | ------- | ---------- | ---------- | ---------------------------------------- |
+| https://blog.hackall.cn | Typecho | cloudflare | 200        | Hack All Sec的博客 - Hack All Sec&#39;s Blog |
+
+![图片](https://mmbiz.qpic.cn/sz_mmbiz_jpg/s7bObPUU0RT11bAwHBGU4qxiayh7tskusPkfhhUibZJZmIaMK0JCvNzPALK9sIRxHlHcps2ibp9R83yIkXpCN6n1Q/640?wx_fmt=jpeg&amp;from=appmsg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1)
+</code></pre>
+
+
+  
+
+</article>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+         总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+         总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
